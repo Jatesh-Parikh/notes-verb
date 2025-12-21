@@ -1,0 +1,91 @@
+// Shared types for all microservices
+
+export interface User {
+    id: string;
+    email: string;
+    createdAt: Date;
+    updatedAt: Date;
+};
+
+export interface UserProfile {
+    id: string;
+    userId: string;
+    firstName?: string | null;
+    lastName?: string | null;
+    bio?: string | null;
+    avatarUrl?: string | null;
+    preferences?: any;
+    createdAt: Date;
+    updatedAt: Date;
+};
+
+export interface UpdateProfileRequest {
+    firstName?: string | null;
+    lastName?: string | null;
+    bio?: string | null;
+    avatarUrl?: string | null;
+    preferences?: Record<string, any>;
+}
+
+export interface Note {
+    id: string;
+    title: string;
+    content: string;
+    isDeleted: boolean;
+    createdAt: Date;
+    updatedAt: Date;
+    tags?: Tag[];
+}
+
+export interface Tag {
+    id: string;
+     name: string;
+     color?: string;
+     userId: string;
+     updatedAt: Date;
+}
+
+export interface createTagRequest {
+    name: string;
+    color?: string;
+}
+
+export interface createNoteRequest {
+    title: string;
+    content: string;
+    tagIds?: string[]
+}
+
+export interface UpdateNoteRequest {
+    title?: string;
+    content?: string;
+    tagIds?: string[];
+}
+
+export interface ServiceResponse<T = any> {
+    success: boolean;
+    data?: T;
+    error?: string;
+    statusCode?: number;
+}
+
+export interface ApiResponse<T = any> {
+    success: boolean;
+    data?: T;
+    message?: string;
+    error?: string;
+    errors?: Record<string, string[]>;
+}
+
+export interface AuthTokens {
+    accessToken: string;
+    refreshToken: string;
+}
+
+export interface JWTPayload {
+    userId: string;
+    email: string;
+    iat: number; // issued at
+    exp: number; // expires at
+}
+

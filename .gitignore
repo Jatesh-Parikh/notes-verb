@@ -1,0 +1,6 @@
+shared/node_modules
+api-gateway/node_modules
+services/auth-service/node_modules
+services/notes-service/node_modules
+services/tags-service/node_modules
+services/user-service/node_modules
