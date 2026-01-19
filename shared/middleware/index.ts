@@ -12,7 +12,29 @@ declare global {
     }
 }
 
-export function authenticateToken() {};
+export function authenticateToken(req: Request, res: Response, next: NextFunction) {
+    const authHeader = req.headers["authorization"];
+    const token = authHeader && authHeader.split(" ")[1]; // Bearer token
+
+    if(!token) {
+        return res.status(401).json(createErrorResponse("Access token required"));
+    }
+
+    const jwtSecret = process.env.JWT_SECRET;
+    if(!jwtSecret) {
+        logError(new Error("JWT_SECRET is not defined"));
+        return res.status(500).json(createErrorResponse("Internal server error"));
+    }
+
+    jwt.verify(token, jwtSecret, (err: any, decoded: any) => {
+        if(err) {
+            return res.status(403).json(createErrorResponse("Invalid token"));
+        }
+
+        req.user = decoded as JWTPayload; // Attach user info to request
+        next();
+    });
+};
 
 export function asyncHandler(
     fn: (req: Request, res: Response, next: NextFunction) => Promise<any>
